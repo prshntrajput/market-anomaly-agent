@@ -1,0 +1,10 @@
+# .gitignore mein ye daalo
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+logs/
+*.log
+.DS_Store
+data/
