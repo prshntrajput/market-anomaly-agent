@@ -2,16 +2,16 @@ from pydantic_settings import BaseSettings
 from typing import Optional
 
 class Settings(BaseSettings):
-    """Application settings - .env se load hogi"""
+    """Application settings"""
     
-    # Google Gemini API (not OpenAI!)
-    google_api_key: str  # Required for Gemini
-    llm_model: str = "gemini-2.0-flash"  # Free tier model
+    # Google Gemini API
+    google_api_key: str
+    llm_model: str = "gemini-2.0-flash"
     llm_temperature: float = 0.7
     
-    # Alpaca Settings
-    alpaca_api_key: str
-    alpaca_api_secret: str
+    # Alpaca Settings (optional now)
+    alpaca_api_key: Optional[str] = None
+    alpaca_api_secret: Optional[str] = None
     alpaca_base_url: str = "https://paper-api.alpaca.markets/v2"
     
     # Tavily Settings
@@ -19,8 +19,15 @@ class Settings(BaseSettings):
     
     # Agent Settings
     max_retries: int = 3
-    anomaly_threshold: float = 10.0
-    volume_threshold: float = 3.0
+    anomaly_threshold: float = 10.0     # Price change %
+    volume_threshold: float = 3.0        # Volume spike ratio
+    
+    # Monitoring Settings
+    monitoring_interval: int = 300       # 5 minutes
+    max_anomalies_per_cycle: int = 5     # Max anomalies to investigate per cycle
+    
+    # Logging
+    log_level: str = "INFO"
     
     class Config:
         env_file = ".env"
