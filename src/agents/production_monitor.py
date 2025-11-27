@@ -1,10 +1,10 @@
-"""Production-ready market monitoring system - FIXED"""
+"""Production-ready market monitoring system - FIXED with v5 Integration"""
 
 from typing import TypedDict, Optional, Literal
 from langgraph.graph import StateGraph, START, END
 from src.tools.advanced_anomaly_detector import AdvancedAnomalyDetector
-from src.agents.anomaly_investigation_v3 import (
-    create_investigation_graph_v3,
+from src.agents.anomaly_investigation_v5 import (
+    create_investigation_graph_v5,
     InvestigationState
 )
 from src.models.schemas import StockAnomaly
@@ -13,7 +13,10 @@ from src.utils.config import settings
 import time
 
 
-# State for production monitoring
+# ============================================================
+# STATE
+# ============================================================
+
 class MonitoringState(TypedDict):
     """State for production monitoring loop"""
     watchlist: list[str]
@@ -23,7 +26,10 @@ class MonitoringState(TypedDict):
     should_continue: bool
 
 
-# Node 1: Fetch next ticker
+# ============================================================
+# NODES
+# ============================================================
+
 def fetch_next_ticker_node(state: MonitoringState) -> dict:
     """Get next ticker to monitor"""
     watchlist = state["watchlist"]
@@ -46,7 +52,6 @@ def fetch_next_ticker_node(state: MonitoringState) -> dict:
     }
 
 
-# Node 2: Detect anomaly
 def detect_anomaly_node(state: MonitoringState) -> dict:
     """Detect anomaly in current ticker"""
     ticker = state["current_ticker"]
@@ -66,43 +71,61 @@ def detect_anomaly_node(state: MonitoringState) -> dict:
     }
 
 
-# Node 3: Investigate anomaly
 def investigate_anomaly_node(state: MonitoringState) -> dict:
-    """Trigger investigation workflow"""
+    """
+    Trigger v5 investigation workflow with advanced features
+    """
     anomaly = state["anomaly_detected"]
     
-    logger.info(f"🔍 Starting investigation for {anomaly.ticker}")
+    logger.info(f"🔍 Starting v5 investigation for {anomaly.ticker}")
+    logger.info(f"   Anomaly: {anomaly.describe()}")
     
-    # Create investigation graph
-    investigation_app = create_investigation_graph_v3()
+    # Create v5 investigation graph
+    investigation_app = create_investigation_graph_v5()
     
     # Initial investigation state
     investigation_state: InvestigationState = {
         "anomaly": anomaly,
         "search_queries": [],
         "search_results": {},
-        "critique": None,
+        "evidence_evaluation": None,
         "iteration": 0,
-        "investigation_complete": False
+        "investigation_complete": False,
+        "final_report": ""
     }
     
     try:
         # Run investigation with higher recursion limit
         result = investigation_app.invoke(
             investigation_state,
-            {"recursion_limit": 50}  # Increase limit for investigation
+            {"recursion_limit": 50}
         )
         
         logger.info(f"✅ Investigation complete for {anomaly.ticker}")
-        logger.info(f"   Confidence: {result['critique'].confidence:.0%}")
-        logger.info(f"   Iterations: {result['iteration'] + 1}")
+        
+        # Log detailed results
+        if result.get('evidence_evaluation'):
+            eval_result = result['evidence_evaluation']
+            logger.info(f"\n📊 Investigation Results:")
+            logger.info(f"   Status: {'✅ SOLVED' if eval_result.explanation_found else '⚠️ UNSOLVED'}")
+            logger.info(f"   Confidence: {eval_result.confidence:.0%}")
+            logger.info(f"   Quality: {eval_result.explanation_quality.upper()}")
+            logger.info(f"   Root Cause: {eval_result.root_cause}")
+            logger.info(f"   Iterations: {result['iteration'] + 1}")
+            logger.info(f"   Evidence Credibility: {eval_result.overall_credibility:.0%}")
+            logger.info(f"   Evidence Relevance: {eval_result.overall_relevance:.0%}")
+            logger.info(f"   Report saved in logs/ directory")
+        
     except Exception as e:
-        logger.error(f"Investigation failed: {e}")
+        logger.error(f"❌ Investigation failed: {e}", exc_info=True)
     
     return {}
 
 
-# Conditional edge 1: Should we investigate?
+# ============================================================
+# CONDITIONAL EDGES
+# ============================================================
+
 def should_investigate(state: MonitoringState) -> Literal["investigate", "next"]:
     """Decide if investigation is needed"""
     if state["anomaly_detected"]:
@@ -111,7 +134,6 @@ def should_investigate(state: MonitoringState) -> Literal["investigate", "next"]
         return "next"
 
 
-# Conditional edge 2: Should monitoring continue?
 def should_continue_monitoring(state: MonitoringState) -> Literal["continue", "end"]:
     """Check if we should continue monitoring"""
     if state["should_continue"]:
@@ -120,9 +142,12 @@ def should_continue_monitoring(state: MonitoringState) -> Literal["continue", "e
         return "end"
 
 
-# Create monitoring graph
+# ============================================================
+# GRAPH CREATION
+# ============================================================
+
 def create_production_monitor():
-    """Production monitoring graph - FIXED VERSION"""
+    """Production monitoring graph with v5 investigation integration"""
     
     workflow = StateGraph(MonitoringState)
     
@@ -160,10 +185,17 @@ def create_production_monitor():
     return workflow.compile()
 
 
-# Main execution function
+# ============================================================
+# MAIN EXECUTION
+# ============================================================
+
 def run_production_monitor(watchlist: list[str], continuous: bool = False):
     """
-    Run production monitoring - FIXED
+    Run production monitoring
+    
+    Args:
+        watchlist: List of tickers to monitor
+        continuous: If True, run infinite loop
     """
     
     logger.info("="*60)
@@ -173,6 +205,7 @@ def run_production_monitor(watchlist: list[str], continuous: bool = False):
     logger.info(f"Anomaly Threshold: {settings.anomaly_threshold}%")
     logger.info(f"Volume Threshold: {settings.volume_threshold}x")
     logger.info(f"Continuous Mode: {continuous}")
+    logger.info(f"Investigation: v5 (Advanced Evidence Evaluation)")
     logger.info("="*60)
     
     app = create_production_monitor()
@@ -224,7 +257,10 @@ def run_production_monitor(watchlist: list[str], continuous: bool = False):
         logger.error(f"❌ Error in monitoring: {e}", exc_info=True)
 
 
-# Test function
+# ============================================================
+# TEST FUNCTION
+# ============================================================
+
 def test_production_monitor():
     """Test production monitoring system"""
     
