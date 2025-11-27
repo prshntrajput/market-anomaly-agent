@@ -14,8 +14,13 @@ class Settings(BaseSettings):
     alpaca_api_secret: Optional[str] = None
     alpaca_base_url: str = "https://paper-api.alpaca.markets/v2"
     
-    # Tavily Settings
+    # Tavily Settings (expanded)
     tavily_api_key: str
+    tavily_search_depth: str = "advanced"  # or "basic"
+    tavily_max_results: int = 5
+    tavily_include_answer: bool = True
+    tavily_days_filter: int = 7  # Last 7 days
+    
     
     # Agent Settings
     max_retries: int = 3

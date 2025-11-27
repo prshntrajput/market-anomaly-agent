@@ -3,8 +3,8 @@
 from typing import TypedDict, Optional, Literal
 from langgraph.graph import StateGraph, START, END
 from src.tools.advanced_anomaly_detector import AdvancedAnomalyDetector
-from src.agents.anomaly_investigation_v2 import (
-    create_investigation_graph_v2,
+from src.agents.anomaly_investigation_v3 import (
+    create_investigation_graph_v3,
     InvestigationState
 )
 from src.models.schemas import StockAnomaly
@@ -74,13 +74,13 @@ def investigate_anomaly_node(state: MonitoringState) -> dict:
     logger.info(f"🔍 Starting investigation for {anomaly.ticker}")
     
     # Create investigation graph
-    investigation_app = create_investigation_graph_v2()
+    investigation_app = create_investigation_graph_v3()
     
     # Initial investigation state
     investigation_state: InvestigationState = {
         "anomaly": anomaly,
         "search_queries": [],
-        "search_results": "",
+        "search_results": {},
         "critique": None,
         "iteration": 0,
         "investigation_complete": False
