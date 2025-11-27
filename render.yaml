@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: market-anomaly-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: ANOMALY_THRESHOLD
+        value: "10.0"
+      - key: VOLUME_THRESHOLD
+        value: "3.0"
+      - key: MAX_RETRIES
+        value: "3"
+      - key: LLM_MODEL
+        value: gemini-1.5-flash
