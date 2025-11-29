@@ -1,109 +1,65 @@
-Market Anomaly Detection Agent
+
+# Market Anomaly Detection Agent
 
 An AI-powered agent that monitors stock markets in real-time, detects anomalies, investigates root causes using web search, and generates detailed reports.
 
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [System Architecture](#system-architecture)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+  - [Step 1: Clone Repository](#step-1-clone-repository)
+  - [Step 2: Create Virtual Environment](#step-2-create-virtual-environment)
+  - [Step 3: Install Dependencies](#step-3-install-dependencies)
+- [Configuration](#configuration)
+  - [Environment Variables](#environment-variables)
+  - [Obtaining API Keys](#obtaining-api-keys)
+- [Usage](#usage)
+  - [Single Monitoring Cycle](#single-monitoring-cycle)
+  - [Continuous Monitoring](#continuous-monitoring)
+  - [Monitoring Indian Stocks](#monitoring-indian-stocks)
+- [How It Works](#how-it-works)
+  - [1. Anomaly Detection](#1-anomaly-detection)
+  - [2. Investigation Process](#2-investigation-process)
+  - [3. Query Generation Strategies](#3-query-generation-strategies)
+  - [4. Evidence Evaluation](#4-evidence-evaluation)
+  - [5. Report Generation](#5-report-generation)
 
 ---
 
-Table of Contents
-
-Overview
-
-Features
-
-System Architecture
-
-Prerequisites
-
-Installation
-
-Step 1: Clone Repository
-
-Step 2: Create Virtual Environment
-
-Step 3: Install Dependencies
-
-
-Configuration
-
-Environment Variables
-
-Obtaining API Keys
-
-
-Usage
-
-Single Monitoring Cycle
-
-Continuous Monitoring
-
-Monitoring Indian Stocks
-
-
-How It Works
-
-1. Anomaly Detection
-
-2. Investigation Process
-
-3. Query Generation Strategies
-
-4. Evidence Evaluation
-
-5. Report Generation
-
-
-
-
----
-
-Overview
+## Overview
 
 This system continuously monitors stock prices, detects significant market anomalies (price drops, volume spikes, etc.), and automatically investigates the root cause using LangGraph agents, web search, and LLM-powered analysis. It then generates detailed professional markdown reports summarizing findings, evidence, and recommendations.
 
+---
+
+## Features
+
+- ✅ Real-time market monitoring for multiple stocks  
+- ✅ Multi-factor anomaly detection  
+  - Price change percentage  
+  - Volume spike ratio  
+  - RSI (Relative Strength Index)  
+  - Volatility  
+  - Price gaps  
+- ✅ AI-powered root cause investigation with self-correction loops  
+- ✅ Advanced query generation using:  
+  - Chain-of-Thought reasoning  
+  - Expert role prompts  
+  - Meta-optimization  
+- ✅ Evidence evaluation with source credibility scoring  
+- ✅ Professional markdown report generation  
+- ✅ Continuous monitoring mode with configurable time intervals  
 
 ---
 
-Features
+## System Architecture
 
-✅ Real-time market monitoring for multiple stocks
-
-✅ Multi-factor anomaly detection:
-
-Price change percentage
-
-Volume spike ratio
-
-RSI (Relative Strength Index)
-
-Volatility
-
-Price gaps
-
-
-✅ AI-powered root cause investigation with self-correction loops
-
-✅ Advanced query generation using:
-
-Chain-of-Thought reasoning
-
-Expert role prompts
-
-Meta-optimization
-
-
-✅ Evidence evaluation with source credibility scoring
-
-✅ Professional markdown report generation
-
-✅ Continuous monitoring mode with configurable time intervals
-
-
-
----
-
-System Architecture
-
+```text
 Market Data (yfinance)
        |
        v
@@ -157,6 +113,9 @@ Step 1: Clone Repository
 git clone https://github.com/yourusername/market-anomaly-agent.git
 cd market-anomaly-agent
 
+
+---
+
 Step 2: Create Virtual Environment
 
 python -m venv .venv
@@ -170,6 +129,9 @@ source .venv/bin/activate
 On Windows:
 
 .venv\Scripts\activate
+
+
+---
 
 Step 3: Install Dependencies
 
@@ -202,21 +164,30 @@ MONITORING_INTERVAL=300
 MAX_ANOMALIES_PER_CYCLE=5
 LOG_LEVEL=INFO
 
+
+---
+
 Obtaining API Keys
 
-Google Gemini API Key:
+Google Gemini API Key
 
 1. Visit: https://aistudio.google.com/app/apikey
 
 
-2. Click "Create API Key"
+2. Click Create API Key
 
 
-3. Copy the generated key and set it as GOOGLE_API_KEY in .env
+3. Copy the generated key
+
+
+4. Paste it into your .env file as GOOGLE_API_KEY
 
 
 
-Tavily API Key:
+
+---
+
+Tavily API Key
 
 1. Visit: https://tavily.com
 
@@ -224,10 +195,13 @@ Tavily API Key:
 2. Sign up for a free account
 
 
-3. Go to the API Keys section
+3. Navigate to the API Keys section
 
 
-4. Copy your key and set it as TAVILY_API_KEY in .env
+4. Copy your key
+
+
+5. Paste it into your .env file as TAVILY_API_KEY
 
 
 
@@ -236,23 +210,26 @@ Tavily API Key:
 
 Usage
 
-All commands are run from the project root.
+All commands must be executed from the project root directory.
+
+
+---
 
 Single Monitoring Cycle
 
-Run a one-off monitoring cycle for a custom watchlist:
-
 python main.py --watchlist AAPL MSFT GOOGL
+
+
+---
 
 Continuous Monitoring
 
-Enable continuous monitoring mode with a configurable interval (MONITORING_INTERVAL in seconds):
-
 python main.py --watchlist AAPL TSLA MSFT GOOGL --continuous
 
-Monitoring Indian Stocks
 
-You can monitor NSE-listed Indian stocks via the .NS suffix:
+---
+
+Monitoring Indian Stocks
 
 python main.py --watchlist RELIANCE.NS TCS.NS INFY.NS HDFCBANK.NS
 
@@ -260,6 +237,9 @@ python main.py --watchlist RELIANCE.NS TCS.NS INFY.NS HDFCBANK.NS
 ---
 
 How It Works
+
+
+---
 
 1. Anomaly Detection
 
@@ -269,296 +249,136 @@ Factors Evaluated:
 
 Price change percentage
 
-Example threshold: 10% move over a selected window
-
-
 Volume spike ratio
-
-Example threshold: 3× average volume
-
 
 RSI (Relative Strength Index)
 
-Identifies overbought/oversold conditions
-
-
 Price volatility
 
-Detects unusually large intraday or multi-day swings
-
-
 Price gaps
-
-Detects opening gaps up/down relative to previous close
-
 
 
 Scoring System (0–9 Scale):
 
-Each factor contributes points to an overall anomaly score:
-
-Higher price/volume deviations → higher score
-
-Confluence of multiple signals (e.g., price crash + volume spike + low RSI) → very high score
-
-
-If the anomaly score ≥ 5, the system triggers a root cause investigation for that ticker.
+Each factor contributes points to the anomaly score.
+If the anomaly score ≥ 5, an investigation is triggered.
 
 
 ---
 
 2. Investigation Process
 
-When an anomaly is detected, the system launches a LangGraph-powered investigation agent. The workflow:
+Once an anomaly is detected, the system launches a LangGraph-powered investigation agent.
 
-1. Step 1 – Generate Search Queries
+Workflow:
 
-Multiple iterations of query refinement:
-
-Chain-of-Thought reasoning
-
-Expert role decomposition
-
-Meta-prompt optimization
+1. Generate search queries
 
 
+2. Execute web search via Tavily
 
 
-2. Step 2 – Execute Web Search (Tavily)
-
-Queries are sent to Tavily API
-
-Returns relevant news, filings, and commentary
+3. Evaluate evidence
 
 
-
-3. Step 3 – Evaluate Evidence
-
-Each result is scored on:
-
-Source credibility
-
-Relevance
-
-Specificity
+4. Determine root cause
 
 
-
-
-4. Step 4 – Determine Root Cause
-
-Aggregates and synthesizes top evidence
-
-Explains likely drivers behind the anomaly
-
-
-
-5. Step 5 – Generate Report
-
-Produces a structured markdown report with:
-
-Summary
-
-Root cause explanation
-
-Evidence and links
-
-Confidence and recommendations
-
-
+5. Generate markdown report
 
 
 
 Self-Correction Loop:
 
-If the model’s confidence score < 70%, it:
-
-Refines search queries
-
-Runs additional Tavily calls
-
-Retries up to MAX_RETRIES times (default: 3)
-
-
+If confidence falls below 70%, the agent refines queries and retries up to MAX_RETRIES.
 
 
 ---
 
 3. Query Generation Strategies
 
-The agent uses three main iterations of query generation to maximize coverage and precision.
-
 Iteration 1 – Chain-of-Thought
 
-Step-by-step reasoning over the anomaly:
+Assess severity of price movement
 
-1. Assess severity of price move (magnitude, direction, speed)
+Analyze volume behavior
 
+Identify potential root causes
 
-2. Analyze volume pattern (spike, drying up, normal)
-
-
-3. Consider common root causes:
-
-Earnings
-
-Guidance changes
-
-M&A
-
-Regulatory actions
-
-Macro/sector news
+Generate targeted queries
 
 
 
-4. Generate initial, targeted web search queries
-
-
+---
 
 Iteration 2 – Expert Role Prompts
 
-The agent assumes multiple expert perspectives to diversify hypothesis space:
+Expert perspectives used:
 
-Earnings Analyst
+Earnings Analyst – Earnings, guidance, revenue
 
-Focus on: quarterly reports, guidance cuts/raises, analyst downgrades, earnings surprises
+Legal Expert – SEC filings, lawsuits
 
+Market Technician – Technical analysis, chart patterns
 
-Legal Expert
-
-Focus on: SEC filings, lawsuits, regulatory investigations, enforcement actions
-
-
-Market Technician
-
-Focus on: technical breakdowns, resistance/support levels, stop-loss cascades, short squeezes
-
-
-Insider Tracker
-
-Focus on: Form 4 insider trades, large block trades, insider selling/buying clusters
+Insider Tracker – Insider trades, Form 4 filings
 
 
 
-Each expert role proposes additional queries tailored to its domain.
+---
 
 Iteration 3 – Meta-Optimization
 
-The LLM:
-
-Reviews queries and search results generated so far
-
-Identifies gaps (e.g., missing region, missing date filters, missing key terms)
-
-Produces improved query variants to capture overlooked explanations
-
-
+The LLM critiques prior queries and generates optimized improvements.
 
 
 ---
 
 4. Evidence Evaluation
 
-Each retrieved piece of evidence is scored along multiple dimensions.
+Source Credibility Tiers:
 
-Source Credibility Tiers
+Tier 1 (1.00) – SEC.gov, company IR
 
-Tier 1 (1.00)
+Tier 2 (0.90–0.94) – Bloomberg, Reuters, WSJ
 
-SEC.gov, official company investor relations pages
+Tier 3 (0.75–0.84) – CNBC, MarketWatch, Yahoo Finance
 
+Tier 4 (0.60–0.68) – Seeking Alpha, Motley Fool
 
-Tier 2 (0.90–0.94)
-
-Bloomberg, Reuters, Wall Street Journal
-
-
-Tier 3 (0.75–0.84)
-
-CNBC, MarketWatch, Yahoo Finance
+Tier 5 (0.30–0.40) – Twitter, Reddit, blogs
 
 
-Tier 4 (0.60–0.68)
+Evaluation Metrics:
 
-Seeking Alpha, Motley Fool
-
-
-Tier 5 (0.30–0.40)
-
-Twitter/X, Reddit, blogs, forums
-
-
-
-Evaluation Metrics
-
-Source credibility (weighted average)
-
-Uses the above tiers to weight each source
-
+Weighted average source credibility
 
 Content relevance
 
-How directly the article/post explains the specific anomaly
-
-
 Information specificity
 
-Concrete events (e.g., “Q3 earnings miss of 20%”) vs vague commentary
+Final confidence score (0–100%)
 
-
-Overall confidence score (0–100%)
-
-Combines credibility, relevance, and specificity
-
-
-
-If confidence is low, the self-correction loop re-runs with refined queries.
 
 
 ---
 
 5. Report Generation
 
-All investigation results are written to the logs/ directory as markdown files.
+All details are saved in the logs/ directory as markdown files.
 
-Each report typically includes:
+Each report includes:
 
-Anomaly Summary
+Anomaly summary
 
-Ticker symbol
+Investigation status
 
-Time of anomaly
+Confidence score
 
-Price change (absolute & percentage)
+Root cause explanation
 
-Volume details (absolute & multiple of average)
+Evidence quality metrics
 
+Source credibility breakdown
 
-Investigation Status
-
-Solved / Unsolved / Partially Explained
-
-
-Confidence Score
-
-0–100% confidence in the identified root cause
-
-
-Root Cause Explanation
-
-Narrative explanation of what likely happened and why
-
-
-Evidence Quality Metrics
-
-Number of sources
-
-Weighted average credibility
-
-Relevance and specificity summaries
-
-
-Source Credibility Breakdown
-
-How many Tier 1 / Tier 2 / ... sources contributed to the conclusion
+Final recommendation
