@@ -92,7 +92,7 @@ Report Generator (Markdown)
 
 ---
 
-Prerequisites
+## Prerequisites
 
 Python 3.10 or higher
 
@@ -106,7 +106,7 @@ Tavily API key (free tier available)
 
 ---
 
-Installation
+## Installation
 
 Step 1: Clone Repository
 
@@ -140,7 +140,7 @@ pip install -r requirements.txt
 
 ---
 
-Configuration
+## Configuration
 
 Environment Variables
 
@@ -167,7 +167,7 @@ LOG_LEVEL=INFO
 
 ---
 
-Obtaining API Keys
+## Obtaining API Keys
 
 Google Gemini API Key
 
@@ -187,7 +187,7 @@ Google Gemini API Key
 
 ---
 
-Tavily API Key
+## Tavily API Key
 
 1. Visit: https://tavily.com
 
@@ -208,7 +208,7 @@ Tavily API Key
 
 ---
 
-Usage
+## Usage
 
 All commands must be executed from the project root directory.
 
@@ -236,7 +236,7 @@ python main.py --watchlist RELIANCE.NS TCS.NS INFY.NS HDFCBANK.NS
 
 ---
 
-How It Works
+## How It Works
 
 
 ---
@@ -288,7 +288,7 @@ Workflow:
 
 
 
-Self-Correction Loop:
+## Self-Correction Loop:
 
 If confidence falls below 70%, the agent refines queries and retries up to MAX_RETRIES.
 
@@ -349,7 +349,7 @@ Tier 4 (0.60–0.68) – Seeking Alpha, Motley Fool
 Tier 5 (0.30–0.40) – Twitter, Reddit, blogs
 
 
-Evaluation Metrics:
+## Evaluation Metrics:
 
 Weighted average source credibility
 
